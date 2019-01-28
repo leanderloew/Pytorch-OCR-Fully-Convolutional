@@ -9,5 +9,11 @@ I also implemented the excellent data generator of: https://github.com/Belval/Te
 Notices: 
 Somethimes the training doesn't quite start. The problem is that the ctc loss gets stuck in a local minimum, where the model only predicts the "blank" or any repeated symbol, that then gets removed. 
 
+Initial parameters, that usually work fine: 
+1.) Start without image augmentations
+2.) Use a Learning rate of 5e-5 
+3.) use a network with 8 layers and 64 units also 0.5 and 0.2  droppout 
+
 Todo: 
-Implement performance on benchmark datasets. 
+Implement performance on benchmark datasets. (IAM etc) 
+
