@@ -1,5 +1,5 @@
 import sys
-#sys.path.append("/home/leander/AI/repos/gen_text/TextRecognitionDataGenerator/") 
+sys.path.append("fake_texts/") 
 #sys.path.append("/home/leander/AI/repos/gen_text/TextRecognitionDataGenerator/fonts") 
 import argparse
 import os, errno
