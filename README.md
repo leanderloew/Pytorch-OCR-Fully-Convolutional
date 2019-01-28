@@ -15,8 +15,8 @@ I also tried out the CTC Loss from Pytorch but I did not get it to train properl
 
 Initial parameters, that usually work fine: 
 - Start without image augmentations
--Use a Learning rate of 5e-5 
--use a network with 8 layers and 64 units also 0.5 and 0.2  droppout 
+- Use a Learning rate of 5e-5 
+- use a network with 8 layers and 64 units also 0.5 and 0.2  droppout 
 
 
 
