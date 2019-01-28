@@ -221,7 +221,7 @@ class Dataset(data.Dataset):
         if self.transform== True: 
             X=self.transform(X)/255
         else:
-            x=x/255
+            X=X/255
         #Here we get some more distorition from Imgaug. 
         #
         
