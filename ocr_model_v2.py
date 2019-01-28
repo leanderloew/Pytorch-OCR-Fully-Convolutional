@@ -119,6 +119,11 @@ class cnn_attention_ocr(nn.Module):
             
             atn_blocks = nn.ModuleList([attention_block(model_dim*8,model_dim*8,input_height=8) for i in range(n_layers-5)])
             self.layers=nn.Sequential(*atn_blocks)
+        #For now we do 8 layers only 
+        if n_layers>8: 
+            
+            atn_blocks_16 = nn.ModuleList([attention_block(model_dim*8,model_dim*8,input_height=8) for i in range(n_layers-8)])
+            self.layers_16=nn.Sequential(*atn_blocks)
 
         self.conv1=depthwise_separable_conv_bn(16,16,13,6)
 
@@ -132,6 +137,8 @@ class cnn_attention_ocr(nn.Module):
         
         self.ln_1=LayerNorm(3).cuda()
         self.ln_4=LayerNorm(16).cuda()
+        
+        
         
     def forward(self, x):
         
@@ -157,7 +164,9 @@ class cnn_attention_ocr(nn.Module):
             x=self.atn_blocks_4(x)
             x=self.mp2(x)
             x=self.layers(x)
-
+        if self.n_layers>8:
+            x=self.layers_16(x)
+            
         x=self.drop2(x)
         x=self.reduce2(x)
         x=torch.mean(x,dim=2)

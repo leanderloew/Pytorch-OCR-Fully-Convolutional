@@ -1,6 +1,6 @@
 import sys
-sys.path.append("/home/leander/AI/repos/gen_text/TextRecognitionDataGenerator/") 
-sys.path.append("/home/leander/AI/repos/gen_text/TextRecognitionDataGenerator/fonts") 
+#sys.path.append("/home/leander/AI/repos/gen_text/TextRecognitionDataGenerator/") 
+#sys.path.append("/home/leander/AI/repos/gen_text/TextRecognitionDataGenerator/fonts") 
 import argparse
 import os, errno
 import random
@@ -54,10 +54,10 @@ from torch.utils import data
 
 class Dataset(data.Dataset):
     'Characterizes a dataset for PyTorch'
-    def __init__(self,batch_size,epoch_size=10,random_strings=True,num_words=5):
+    def __init__(self,batch_size,epoch_size=10,random_strings=True,num_words=5,transform=False):
         'Initialization'
         #General args:
-        
+        self.transform=transform
         self.random_strings=random_strings
         self.num_words=num_words
         #How much data we want to generate in a single epoch 
@@ -218,8 +218,12 @@ class Dataset(data.Dataset):
         x_len=X.shape[2]
         y_len=len(y)
         
+        if self.transform== True: 
+            X=self.transform(X)/255
+        else:
+            x=x/255
         #Here we get some more distorition from Imgaug. 
-        X=self.transform(X)/255
+        #
         
 
         return X, y,x_len,y_len
