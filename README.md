@@ -1,7 +1,7 @@
 # Pytorch-OCR-Fully-Conv
 
 This repository contains code of a pytorch implementation of: 
-Accurate, Data-Efficient, Unconstrained Text Recognition with Convolutional Neural Networks https://arxiv.org/abs/1812.11894
+[Accurate, Data-Efficient, Unconstrained Text Recognition with Convolutional Neural Networks] (https://arxiv.org/abs/1812.11894)
 I am not affiliated with the authors of the paper. 
 
 I also implemented the excellent data generator of [@Belval](https://github.com/Belval/TextRecognitionDataGenerator) as a pytorch dataset. 
