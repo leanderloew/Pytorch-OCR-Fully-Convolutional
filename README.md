@@ -6,7 +6,10 @@ I am not affiliated with the authors of the paper.
 
 I also implemented the excellent data generator of [@Belval](https://github.com/Belval/TextRecognitionDataGenerator) as a pytorch dataset. 
 
-##Notices: 
+## code organization
+
+
+## Notices: 
 Sometimes the training doesn't quite start. The problem is that the ctc loss gets stuck in a local minimum, where the model only predicts the "blank" or any repeated symbol. This would then result in an infinite CER. 
 
 I also tried out the CTC Loss from Pytorch but I did not get it to train properly. 
