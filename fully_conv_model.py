@@ -8,36 +8,34 @@ from torch.nn.modules.normalization import LayerNorm,LocalResponseNorm
 from torch.nn import BatchNorm2d,MaxPool2d
 
 #This tells us which dimension we want to layernomalize over, by default, if we give it one value it will normalize over the
-#channels dimension, it has to be a fixed dimension, so the only alternative is if we would use the the height to normalize, we can try tht by exchanging the last two dimnsions like this (0,1,3,2) 
+#channels dimension, it has to be a fixed dimension, so the only alternative is if we would use the the height to normalize, we can try tht by exchanging the last two dimnsions like this (0,1,3,2)
+#After experiements, it makes by far the most sense that we normalize over the channel dimension (this was also their feedback)
 chan_norm=(0,3,2,1)
 
-def lnrom(x,dim=1):
-    means=torch.mean(x,dim=1).unsqueeze(1)
-    sts=torch.std(x,dim=1).unsqueeze(1)
-    out=(x-means)/(sts+0.0001)
-    return out 
 
 class depthwise_separable_conv_bn(nn.Module):
     def __init__(self, nin, nout,ks=3,p=1):
         super(depthwise_separable_conv_bn, self).__init__()
         self.depthwise = nn.Conv2d(nin, nin, kernel_size=ks, padding=p, groups=nin,bias=False)
         self.bnorm = BatchNorm2d(nin)
-        #self.bnorm=LocalResponseNorm(2)
         self.pointwise = nn.Conv2d(nin, nout, kernel_size=1)
     def forward(self, x):
         out = self.depthwise(x)
+        #We do bnorm inbetween the seperable and the pointwise
         out = self.bnorm(out)
         out = self.pointwise(out)
         return out
 
     
-#We want to be able to change the dimension!
+
 class attention_block(nn.Module):
     def __init__(self, input_channels=8,output_channels=8,input_height=32):
         super(attention_block, self).__init__()
 
         reduce_dim=int(output_channels/2)
         self.reduce_dim=reduce_dim
+        
+        #When we increase the dimension in such a layer we have to "increase" the input for the residual connection
         if input_channels==output_channels:
             self.residual=False
         else:
@@ -58,11 +56,12 @@ class attention_block(nn.Module):
         self.el2=nn.ELU()
         
         w=reduce_dim
-        self.ln_1=LayerNorm(w,elementwise_affine=True)#.cuda()
-        self.ln_2=LayerNorm(w,elementwise_affine=False)#.cuda()
-        self.ln_3=LayerNorm(w,elementwise_affine=False)#.cuda()
-        self.ln_4=LayerNorm(w,elementwise_affine=False)#.cuda()
-        self.ln_5=LayerNorm(w,elementwise_affine=False)#.cuda()   
+        #elementwise affine true means we learn if we want to normalize, false we always normalize
+        self.ln_1=LayerNorm(w,elementwise_affine=True)
+        self.ln_2=LayerNorm(w,elementwise_affine=False)
+        self.ln_3=LayerNorm(w,elementwise_affine=False)
+        self.ln_4=LayerNorm(w,elementwise_affine=False)
+        self.ln_5=LayerNorm(w,elementwise_affine=False)
 
     def forward(self, inpu):
 
