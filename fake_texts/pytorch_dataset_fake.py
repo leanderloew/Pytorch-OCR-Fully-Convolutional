@@ -55,7 +55,7 @@ from torch.utils import data
 
 class Dataset(data.Dataset):
     'Characterizes a dataset for PyTorch'
-    def __init__(self,batch_size,epoch_size=10,random_strings=True,num_words=5,transform=False):
+    def __init__(self,batch_size,epoch_size=10,random_strings=True,num_words=5,transform=False,width=-1,alignment=1):
         'Initialization'
         #General args:
         self.transform=transform
@@ -102,14 +102,14 @@ class Dataset(data.Dataset):
         self.distorsion=0
         """Define the distorsion's orientation. Only used if -d is specified. 0: Vertical (Up and down), 1: Horizontal (Left and Right), 2: Both"""
         self.distorsion_orientation=0
-        self.width=-1
+        self.width=width
         self.orientation=0
         self.text_color='#282828'
         self.space_width=1.0
         self.extension="jpg"
         self.handwritten=False
         self.name_format=0
-        self.alignment=1
+        self.alignment=alignment
 
         #This shoule be done on init We also do string generation in the init of the dataset
         pool = ''
@@ -123,6 +123,7 @@ class Dataset(data.Dataset):
         self.fonts = load_fonts("en")
         
         self.decode_dict=dict((v,k) for k,v in self.dictionary.items())
+        self.decode_dict.update({93 : "OOK"})
 
         ###Get strings
         strings = []
@@ -144,6 +145,8 @@ class Dataset(data.Dataset):
         strings =[" ".join(take_10(word_tokenize(x))) for x in strings]
         #Next we split into cahracter
         strings_=[list(x)for x in strings]
+        #self.strings=strings
+        #self.strings_=strings_
         #Then we convert to interger, 93 for symbols we dont know
         self.strings_int=[[self.dictionary[x] if x in self.keys else 93 for x in m ] for m in strings_]
         #Then we get the lengths, we need for loss
@@ -189,7 +192,7 @@ class Dataset(data.Dataset):
         y_len=len(y)
         
         if self.transform== True: 
-            X=self.transform(X)/255
+            X=self.seq.augment_images(X)/255
         else:
             X=X/255
         #Here we get some more distorition from Imgaug. 

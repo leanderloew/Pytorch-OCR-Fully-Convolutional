@@ -102,7 +102,11 @@ def create_strings_randomly(length, allow_variable, count, let, num, sym, lang):
         current_string = ""
         for _ in range(0, random.randint(1, length) if allow_variable else length):
             seq_len = random.randint(min_seq_len, max_seq_len)
+ 
+            
             current_string += ''.join([random.choice(pool) for _ in range(seq_len)])
             current_string += ' '
         strings.append(current_string[:-1])
+        
+        
     return strings

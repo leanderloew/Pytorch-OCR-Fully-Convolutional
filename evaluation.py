@@ -1,5 +1,6 @@
 import torch
 import numpy
+import matplotlib.pyplot as plt
 
     
 def wer(r, h):
@@ -39,3 +40,9 @@ def wer_eval(preds,labels):
     preds=preds_to_integer(preds)
     we=wer(preds,labels)
     return we/len(preds)
+
+def show(img):
+    npimg = img.numpy()
+    plt.figure(figsize=(20, 20))
+    plt.imshow(np.transpose(npimg, (1, 2, 0)), interpolation='nearest')
+    
