@@ -12,10 +12,10 @@ I also implemented the excellent data generator of [@Belval](https://github.com/
   I load the data during the init of the dataset, with a particular set of parameters. The generation has many parameters most of them are hard set inside of the init. 
 - IAM_dataset:
   Contains a simple Pytorch dataset to load the IAM handwritten offline dataset, on a line by line basis. 
-## Training Notebooks:
-- 'OCR_Training_synthetic.ipynb'
+### Training Notebooks:
+- `OCR_Training_synthetic.ipynb'
   Trains a model on the synthetic dataset
-- 'OCR_training_handwritten.ipynb'
+-  `OCR_training_handwritten.ipynb'
   Trains a model on the IAM offline handwritten line segment dataset. 
 
 
