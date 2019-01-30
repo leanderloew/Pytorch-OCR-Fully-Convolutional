@@ -6,6 +6,10 @@ This repository contains code of a pytorch implementation of:
 I also implemented the excellent data generator of [@Belval](https://github.com/Belval/TextRecognitionDataGenerator) as a pytorch dataset. 
 
 ## code organization
+- fake_texts
+  A folder that includes python files to set up a pytroch dataset using @Belval synthetic data generator. 
+
+  I load the data during the init, with a particular set of parameters. The generation has many parameters most of them are hard_set inside of the init. 
 
 
 ## Notices
