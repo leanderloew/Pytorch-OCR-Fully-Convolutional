@@ -1,6 +1,6 @@
 # Pytorch-OCR-Fully-Conv
 
-This repository contains code of a pytorch implementation of: 
+This repository is a work in progress implementation of: 
 [Accurate, Data-Efficient, Unconstrained Text Recognition with Convolutional Neural Networks](https://arxiv.org/abs/1812.11894) I am not affiliated with the authors of the paper. 
 
 I also implemented the excellent data generator of [@Belval](https://github.com/Belval/TextRecognitionDataGenerator) as a pytorch dataset. I reyl on the pytorch implementation of the ctc loss from [@jpuigcerver](https://github.com/jpuigcerver/pytorch-baidu-ctc). I found the performance from the warp-CTC to be better than the ones native to pytorch. 
@@ -26,7 +26,15 @@ Initial parameters, that usually work fine:
 - Start without image augmentations and easy examples.
 - Use a Learning rate of 5e-5 
 
-## Todo: 
+## Progress: 
 Implement performance on benchmark datasets. (IAM etc) 
 Implement Batch-Renorm for Pytorch
 
+- [x] Implement Model in Pytorch
+- [x] Implement CTC Loss
+- [x] Implement Synthetic Data Generator
+- [x] Implement synthetic training script
+- [x] Implement IAM dataset
+- [x] Implement IAM training script
+- [ ] Compare performance on benchmark dataset
+- [ ] Implement Batch-Renorm for Pytorch
