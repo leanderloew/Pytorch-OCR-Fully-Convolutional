@@ -1,4 +1,4 @@
-# Pytorch-OCR-Fully-Conv
+# Pytorch-OCR-Fully-Convolutional
 
 This repository is a work in progress implementation of: 
 [Accurate, Data-Efficient, Unconstrained Text Recognition with Convolutional Neural Networks](https://arxiv.org/abs/1812.11894) I am not affiliated with the authors of the paper. 
