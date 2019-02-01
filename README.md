@@ -14,9 +14,9 @@ I also implemented the excellent data generator of [@Belval](https://github.com/
   Contains a simple Pytorch dataset to load the IAM handwritten offline dataset, on a line by line basis. 
   
 ### Training Notebooks:
-- `OCR_Training_synthetic.ipynb'
+- OCR_Training_synthetic.ipynb
   Trains a model on the synthetic dataset
--  `OCR_training_handwritten.ipynb'
+-  OCR_training_handwritten.ipynb
   Trains a model on the IAM offline handwritten line segment dataset. 
 
 ## Progress: 
