@@ -1,0 +1,10 @@
+torch
+pandas
+numpy
+torch-baidu-ctc
+tensorboardX
+skimage
+torchvision
+opencv-python
+re
+string
