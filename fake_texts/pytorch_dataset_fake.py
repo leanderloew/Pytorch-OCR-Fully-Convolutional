@@ -24,6 +24,10 @@ import matplotlib.pyplot as plt
 import imgaug as ia
 from imgaug import augmenters as iaa
 from imgaug_transformations import augmentations
+from skimage.transform import resize
+import cv2
+
+
 
 def load_dict(lang):
     """
@@ -34,6 +38,7 @@ def load_dict(lang):
     with open(os.path.join('dicts', lang + '.txt'), 'r', encoding="utf8", errors='ignore') as d:
         lang_dict = d.readlines()
     return lang_dict
+
 
 def load_fonts(lang):
     """
@@ -55,7 +60,7 @@ from torch.utils import data
 
 class Dataset(data.Dataset):
     'Characterizes a dataset for PyTorch'
-    def __init__(self,batch_size,epoch_size=10,random_strings=True,num_words=5,transform=False,width=-1,alignment=1):
+    def __init__(self,batch_size,epoch_size=10,random_strings=True,num_words=5,transform=False,width=-1,alignment=1,height=32):
         'Initialization'
         #General args:
         self.transform=transform
@@ -86,7 +91,7 @@ class Dataset(data.Dataset):
         #If we want to have variable word lengths, "length is maximum)
         self.random=True
         #The height of the image
-        self.format=32
+        self.format=height
         #Skeqing angle
         self.skew_angle=0
         self.random_skew=True
@@ -95,7 +100,7 @@ class Dataset(data.Dataset):
         self.random_blur=True
 
         """Define what kind of background to use. 0: Gaussian Noise, 1: Plain white, 2: Quasicrystal, 3: Pictures""",
-        self.background=0
+        self.background=1
 
         """Define a distorsion applied to the resulting image. 0: None (Default), 1: Sine wave, 2: Cosine wave, 3: Random""",
 
@@ -105,7 +110,7 @@ class Dataset(data.Dataset):
         self.width=width
         self.orientation=0
         self.text_color='#282828'
-        self.space_width=1.0
+        self.space_width=0.1
         self.extension="jpg"
         self.handwritten=False
         self.name_format=0
@@ -188,16 +193,24 @@ class Dataset(data.Dataset):
         # Select sample
         X=self.image_list[index]#/255
         y=self.strings_int[index]
-        x_len=X.shape[2]
         y_len=len(y)
         
-        if self.transform== True: 
-            X=self.seq.augment_images(X)/255
-        else:
-            X=X/255
-        #Here we get some more distorition from Imgaug. 
-        #
         
+        if self.transform== True: 
+            X=self.seq.augment_images(X)
+        X=np.squeeze(X)  
+        #X=cv2.cvtColor(X,cv2.COLOR_RGB2GRAY)
+        #X=cv2.cvtColor(X,cv2.COLOR_GRAY2RGB)
+        
+    #    resize_shape=(12,int(12*X.shape[1]/X.shape[0]))
+   #     X = resize(X,resize_shape,mode="constant") 
+#
+#        resize_shape=(32,int(32*X.shape[1]/X.shape[0]))
+ #       X = resize(X,resize_shape,mode="constant")     
+  #      
+        X=np.expand_dims(X,0) 
+        #X =X/255
+        x_len=X.shape[2]
 
         return X, y,x_len,y_len
     
@@ -207,6 +220,7 @@ class Dataset(data.Dataset):
 def my_collate(batch):
     #some shapes 
     one,height,wi,channels=batch[0][0].shape
+    print(wi)
     #batch size
     batch_size=len(batch)
     #get hte max witdth for padding 
