@@ -28,6 +28,7 @@ from skimage.transform import resize
 import cv2
 
 
+#Basically we want to add the
 
 def load_dict(lang):
     """
@@ -48,7 +49,7 @@ def load_fonts(lang):
     if lang == 'cn':
         return [os.path.join('fonts/cn', font) for font in os.listdir('fonts/cn')]
     else:
-        return [os.path.join("/home/leander/AI/repos/gen_text/TextRecognitionDataGenerator/fonts/latin/", font) for font in os.listdir("/home/leander/AI/repos/gen_text/TextRecognitionDataGenerator/fonts/latin/")]
+        return [os.path.join("fonts/latin/", font) for font in os.listdir("fonts/latin/")]
 
 
 import numpy as np
@@ -118,7 +119,7 @@ class Dataset(data.Dataset):
 
         #This shoule be done on init We also do string generation in the init of the dataset
         pool = ''
-        pool += string.ascii_letters
+        pool += "abcdefghijklmnopqrstuvwxyz"
         pool += "0123456789"
         pool += "!\"#$%&'()*+,-./:;?@[\\]^_`{|}~"
         pool += ' '
@@ -128,7 +129,7 @@ class Dataset(data.Dataset):
         self.fonts = load_fonts("en")
         
         self.decode_dict=dict((v,k) for k,v in self.dictionary.items())
-        self.decode_dict.update({93 : "OOK"})
+        self.decode_dict.update({67 : "OOK"})
 
         ###Get strings
         strings = []
@@ -153,7 +154,7 @@ class Dataset(data.Dataset):
         #self.strings=strings
         #self.strings_=strings_
         #Then we convert to interger, 93 for symbols we dont know
-        self.strings_int=[[self.dictionary[x] if x in self.keys else 93 for x in m ] for m in strings_]
+        self.strings_int=[[self.dictionary[x.lower() ] if x.lower()  in self.keys else 67 for x in m ] for m in strings_]
         #Then we get the lengths, we need for loss
         self.strings_len=[len(x)for x in self.strings_int]
         string_count = len(strings)
