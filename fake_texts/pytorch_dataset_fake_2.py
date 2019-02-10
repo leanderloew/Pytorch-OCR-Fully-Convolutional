@@ -190,34 +190,3 @@ class Dataset(data.Dataset):
 
         return X, y,x_len,y_len
     
-# a simple custom collate function, just to show the idea
-#Basically the collate gets calleda list of the putputs of all the batches
-
-def my_collate(batch):
-    #some shapes 
-    one,height,wi,channels=batch[0][0].shape
-    print(wi)
-    #batch size
-    batch_size=len(batch)
-    #get hte max witdth for padding 
-    widths=np.array([x[2] for x in batch])
-    max_width=np.max(widths)
-    #get label in a long array 
-    label_stack=np.concatenate([x[1] for x in batch])
-    #get all the lengths 
-    length_stack_y=np.array([x[3] for x in batch])
-    #Here we will inster images, aka we pad them 
-    img_stack=np.zeros(shape=(batch_size,height,max_width,channels))
-
-    #We loop over the batch once 
-    for enu,img in enumerate(batch):
-        shape=img[2]
-        img_stack[enu,:,0:shape,:]=np.squeeze(img[0])
-        
-    img_stack=torch.tensor(img_stack).cuda().float().permute((0,3,1,2))
-    label_stack=torch.tensor(label_stack, dtype=torch.int32).cuda()
-    widths=torch.tensor(widths,dtype=torch.int32)
-    length_stack_y=torch.tensor(length_stack_y,dtype=torch.int32)
-        
-    return img_stack,label_stack,widths,length_stack_y
-

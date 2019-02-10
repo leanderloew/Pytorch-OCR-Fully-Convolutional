@@ -100,8 +100,8 @@ def my_collate(batch):
         shape=img[2]
         img_stack[enu,:,0:shape,:]=np.squeeze(img[0])
         
-    img_stack=torch.tensor(img_stack).cuda().float().permute((0,3,1,2))
-    label_stack=torch.tensor(label_stack, dtype=torch.int32).cuda()
+    img_stack=torch.tensor(img_stack).float().permute((0,3,1,2))#.cuda()
+    label_stack=torch.tensor(label_stack, dtype=torch.int32)#.cuda()
     widths=torch.tensor(widths,dtype=torch.int32)
     length_stack_y=torch.tensor(length_stack_y,dtype=torch.int32)
         

@@ -129,8 +129,8 @@ class cnn_attention_ocr(nn.Module):
         self.reduce1 = nn.Conv2d(3, 16, kernel_size=1)
         self.reduce2 = nn.Conv2d(model_dim*8, self.classes, kernel_size=1)
                 
-        self.drop1=nn.Dropout2d(0.5)
-        self.drop2=nn.Dropout2d(0.2)
+        self.drop1=nn.Dropout2d(0.75)
+        self.drop2=nn.Dropout2d(0.6)
  
         self.ln_3=LayerNorm(self.classes)        
         
