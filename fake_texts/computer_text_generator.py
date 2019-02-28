@@ -34,7 +34,6 @@ class ComputerTextGenerator(object):
             random.randint(c1[1], c2[1]),
             random.randint(c1[2], c2[2])
         )
-
         for i, w in enumerate(words):
             txt_draw.text((sum(words_width[0:i]) + i * int(space_width), 0), w, fill=fill, font=image_font)
 

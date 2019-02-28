@@ -130,12 +130,12 @@ class cnn_attention_ocr(nn.Module):
         self.reduce2 = nn.Conv2d(model_dim*8, self.classes, kernel_size=1)
                 
         self.drop1=nn.Dropout2d(0.75)
-        self.drop2=nn.Dropout2d(0.6)
+        self.drop2=nn.Dropout2d(0.5)
  
         self.ln_3=LayerNorm(self.classes)        
-        
         self.ln_1=LayerNorm(3).cuda()
         self.ln_4=LayerNorm(16).cuda()
+        self.soft_norm=nn.Softmax2d()
         
         
         
@@ -147,7 +147,7 @@ class cnn_attention_ocr(nn.Module):
         #x=self.ln_1(x.permute(chan_norm)).permute(chan_norm)
         x_res=x
         x=self.reduce1(x)
-        x=torch.softmax(x,1)
+        x=self.soft_norm(x)
         x=self.conv1(x)
         x=self.drop1(x)
         x=self.ln_4(x.permute(chan_norm)).permute(chan_norm)

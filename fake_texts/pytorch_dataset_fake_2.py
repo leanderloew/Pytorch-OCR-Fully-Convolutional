@@ -133,8 +133,11 @@ class Dataset(data.Dataset):
         alignment=random.randint(0,2)
 
         strings = []
+        #try: 
+        #    strings = create_strings_from_wikipedia(1, 1, "en")
+        #except:
         strings = create_strings_randomly(num_words, False, 1,
-                      True, True,True, "en")
+                          True, True,True, "en")
 
         strings =[" ".join(take_10(word_tokenize(x))) for x in strings]
 
@@ -144,12 +147,15 @@ class Dataset(data.Dataset):
         string_count = len(strings)
 
         #What we do here is we space the words quite far appart. 
-        if random.random()>0.5:
+        if random.random()>0.8:
             width_scale=random.random()*900
             space_width=width_scale/np.sum(self.strings_len)
         else:
-            width_scale=random.random()
-            space_width=width_scale/np.sum(self.strings_len)
+            #width_scale=random.randint(50,100)/100
+            #width_scale=1
+            #space_width=width_scale/np.sum(self.strings_len)
+            space_width=2#random.randint(50,100)/100
+            
             if random.random()>0.85 and np.max(self.strings_len)<30:
                 width=random.randint(500,800)
 
@@ -174,17 +180,32 @@ class Dataset(data.Dataset):
                     [self.orientation] * string_count,
                     [space_width] * string_count )]
         
+        
         X=image_list[0]
         y=self.strings_int[0]
         
         y_len=len(y)
         
+        #Here we include some random horizontal lines cause they appear quite often in real life. 
+        if random.random()>0.8:
+            for j in range(random.randint(0,3)):
+
+                random_channel=random.randint(0,2)
+                random_h=random.randint(0,31)
+                random_w_s=random.randint(0,int(X.shape[2]/2))
+                random_w_e=random.randint(int(X.shape[2]/2),int(X.shape[2]))
+            
+                
+                X[0,random_h,random_w_s:random_w_e,random_channel]=random.randint(0,255)
+
         if self.transform== True: 
             X=self.seq.augment_images(X)
             
         #X=np.squeeze(X)   
-
+        
         #X=np.expand_dims(X,0) 
+
+
         X =X/255
         x_len=X.shape[2]
 
